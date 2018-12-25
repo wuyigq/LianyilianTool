@@ -93,7 +93,7 @@ public class LianyilianTool {
 		if (colors[x][y] == clrNo){
 			if (step >= cur_length) {
 				cnt_slt++;
-//				printResult(colors);
+				printResult(colors);
 			}
 			else if (clrNo<cur_map.length) {
 				int[] p = cur_map[clrNo];
@@ -101,14 +101,15 @@ public class LianyilianTool {
 			}
 			return false;
 		} 
-		return colors[x][y] == 0;
+		return colors[x][y] == 0 && cnt_slt <= 0;
 	}
-	int temp = 0;
-	/*
+
+	/**
 	*递归查找
-	*colors元素结构:低16位表示步数，高16位表示颜色编号
+	*colors元素结构:高8位表示步数，低8位表示颜色编号
 	*/
 	public void step(int[][] colors, int step, int x, int y, int clrNo, boolean isSkip){
+		if (cnt_slt > 0) return;
 		colors[x][y] = (step << 8) + clrNo;
 		if (x+1<cur_line && check(colors, step+1, x+1, y, clrNo)) step(colors, step+1, x+1, y, clrNo, false);
 		if (x>0 && check(colors, step+1, x-1, y, clrNo)) step(colors, step+1, x-1, y, clrNo, false);
@@ -140,12 +141,9 @@ public class LianyilianTool {
 		step(colors, 1, p[1], p[2], 1, true);
 	}
 	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) throws Exception {
 		LianyilianTool rc = new LianyilianTool();
-		String dir = "C:\\Users\\hasee\\Desktop\\flow\\";
+		String dir = "flow\\";
 		String[] folders = new String[]{"5高级", "6专家", "7大师"};
 		int[] lines = new int[]{8, 9, 10};
 		for(int i = 1; i<folders.length; i++){
